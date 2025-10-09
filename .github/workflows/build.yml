@@ -1,0 +1,47 @@
+name: Build STM32 firmware
+
+on:
+  push:
+    tags:
+      - 'v*'   # runs only when pushing tags like v1.0.0, v2.3, etc.
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install ARM toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-arm-none-eabi cmake ninja-build
+
+      - name: Configure
+        run: cmake -B build -DCMAKE_TOOLCHAIN_FILE=cmake/gcc-arm-none-eabi.cmake -G Ninja
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Package binaries
+        run: |
+          TAG_NAME=${GITHUB_REF_NAME}
+          location_elf=$(find build -type f | grep .elf)
+          echo "Found .elf file: $location_elf"
+          location_elf_no_ext="${location_elf%.*}"
+          mv $location_elf "$location_elf_no_ext-$TAG_NAME-$(date +%s).elf"
+          location_elf=$(find build -type f | grep .elf)
+          echo "ELF file renamed to $location_elf"
+          mkdir -p release
+          cp $location_elf release/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
