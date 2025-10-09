@@ -15,6 +15,11 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        
+      - name: Clean build directory
+        run: |
+          rm -rf build
+          mkdir build
 
       - name: Install ARM toolchain
         run: |
@@ -30,11 +35,11 @@ jobs:
       - name: Package binaries
         run: |
           TAG_NAME=${GITHUB_REF_NAME}
-          location_elf=$(find build -type f | grep .elf)
+          location_elf=$(find build -type f -name "*.elf")
           echo "Found .elf file: $location_elf"
           location_elf_no_ext="${location_elf%.*}"
           mv $location_elf "$location_elf_no_ext-$TAG_NAME-$(date +%s).elf"
-          location_elf=$(find build -type f | grep .elf)
+          location_elf=$(find build -type f -name "*.elf")
           echo "ELF file renamed to $location_elf"
           mkdir -p release
           cp $location_elf release/
