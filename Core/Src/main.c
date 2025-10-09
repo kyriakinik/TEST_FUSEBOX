@@ -97,7 +97,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   // Start PWM channels
   HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
-  uint8_t pwm_levels[] = {0, 100, 50}; // Οι καταστάσεις duty cycle
+  uint8_t pwm_levels[] = {0, 20, 50}; // Οι καταστάσεις duty cycle
   uint8_t state = 0;                   // current state
   GPIO_PinState prev_button_state = GPIO_PIN_RESET;
 
