@@ -120,10 +120,10 @@ int main(void)
 			// button just pressed
 			state = (state + 1) % 3; //cycle 0 → 1 → 2 → 0
 			test_pwm(pwm_levels[state]);
-			HAL_Delay(200); //
+			HAL_Delay(10); //
 		}
 
-		prev_button_state = button_state;
+		//prev_button_state = button_state;
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
