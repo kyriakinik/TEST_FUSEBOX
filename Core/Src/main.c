@@ -110,7 +110,8 @@ int main(void)
   {
 
 
-
+    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+    HAL_Delay(500);
 
 	  	GPIO_PinState button_state = HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin);
 
