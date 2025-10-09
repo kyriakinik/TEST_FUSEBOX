@@ -115,12 +115,12 @@ int main(void)
 
 	  	GPIO_PinState button_state = HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin);
 
-		if (button_state == GPIO_PIN_SET && prev_button_state == GPIO_PIN_RESET)
+		if (button_state == GPIO_PIN_SET)
 		{
 			// button just pressed
 			state = (state + 1) % 3; //cycle 0 → 1 → 2 → 0
 			test_pwm(pwm_levels[state]);
-			HAL_Delay(10); //
+			HAL_Delay(1000); //
 		}
 
 		//prev_button_state = button_state;
